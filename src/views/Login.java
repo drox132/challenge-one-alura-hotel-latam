@@ -29,6 +29,8 @@ public class Login extends JFrame {
 	private JPasswordField txtContrasena;
 	int xMouse, yMouse;
 	private JLabel labelExit;
+	private JLabel labelAtras;
+
 
 	/**
 	 * Launch the application.
@@ -78,6 +80,38 @@ public class Login extends JFrame {
 		panel_1.add(imgHotel);
 		imgHotel.setIcon(new ImageIcon(Login.class.getResource("/imagenes/img-hotel-login-.png")));
 		
+		
+		/////////////////////////////////////////////////////
+		JPanel btnAtras = new JPanel();
+		btnAtras.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				MenuPrincipal usuario = new MenuPrincipal();
+				usuario.setVisible(true);
+				dispose();				
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAtras.setBackground(new Color(12, 138, 199));
+				labelAtras.setForeground(Color.white);
+			}			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				 btnAtras.setBackground(Color.white);
+			     labelAtras.setForeground(Color.black);
+			}
+		});
+		btnAtras.setLayout(null);
+		btnAtras.setBackground(Color.WHITE);
+		btnAtras.setBounds(0, 0, 53, 36);
+		panel.add(btnAtras);
+		
+		labelAtras = new JLabel("<");
+		labelAtras.setBounds(0, 0, 53, 36);
+		btnAtras.add(labelAtras);
+		labelAtras.setHorizontalAlignment(SwingConstants.CENTER);
+		labelAtras.setFont(new Font("Roboto", Font.PLAIN, 23));
+		//////////////////////////////////////////////////////////
 		JPanel btnexit = new JPanel();
 		btnexit.setBounds(251, 0, 53, 36);
 		panel_1.add(btnexit);

@@ -11,6 +11,10 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
+
+import controller.ReservaController;
+import model.Reserva;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -71,6 +75,8 @@ public class ReservasView extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
+		
+		final ReservaController reservaController = new ReservaController();
 		
 
 		
@@ -209,7 +215,7 @@ public class ReservasView extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
+				MenuPrincipal usuario = new MenuPrincipal();
 				usuario.setVisible(true);
 				dispose();				
 			}
@@ -243,6 +249,8 @@ public class ReservasView extends JFrame {
 		
 		
 		//Campos que guardaremos en la base de datos
+		
+		
 		txtFechaEntrada = new JDateChooser();
 		txtFechaEntrada.getCalendarButton().setBackground(SystemColor.textHighlight);
 		txtFechaEntrada.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/imagenes/icon-reservas.png")));
@@ -264,7 +272,23 @@ public class ReservasView extends JFrame {
 		txtFechaSalida.setFont(new Font("Roboto", Font.PLAIN, 18));
 		txtFechaSalida.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
+				
 				//Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
+				//=====================================================================================================
+				if(txtFechaEntrada.getDate()!= null ||txtFechaSalida.getDate() !=null ) {
+					
+					  long diffInMilliseconds = txtFechaSalida.getDate().getTime() -
+					  txtFechaEntrada.getDate().getTime(); 
+					  long diasDiferencia = diffInMilliseconds  / (24 * 60 * 60 * 1000);
+					  
+					  System.out.println("La diferencia en días es: " + diasDiferencia);
+					  txtValor.setText(String.valueOf(Double.parseDouble("20.0")*diasDiferencia));
+					 
+				}
+				
+
+				//=====================================================================================================
+				
 			}
 		});
 		txtFechaSalida.setDateFormatString("yyyy-MM-dd");
@@ -280,9 +304,11 @@ public class ReservasView extends JFrame {
 		txtValor.setEditable(false);
 		txtValor.setFont(new Font("Roboto Black", Font.BOLD, 17));
 		txtValor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		txtValor.setColumns(20);
 		panel.add(txtValor);
-		txtValor.setColumns(10);
-
+		
+		//probando
+		txtValor.setText("20.0"); 
 
 		txtFormaPago = new JComboBox();
 		txtFormaPago.setBounds(68, 417, 289, 38);
@@ -292,13 +318,29 @@ public class ReservasView extends JFrame {
 		txtFormaPago.setModel(new DefaultComboBoxModel(new String[] {"Tarjeta de Crédito", "Tarjeta de Débito", "Dinero en efectivo"}));
 		panel.add(txtFormaPago);
 
+		
+		
+
 		JPanel btnsiguiente = new JPanel();
 		btnsiguiente.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {		
+					//===========================================================================
+					Integer idReserva = reservaController.save(new Reserva(
+							txtFechaEntrada.getDate(),
+							txtFechaSalida.getDate(),
+							Float.parseFloat(txtValor.getText()),
+							txtFormaPago.getSelectedItem().toString()
+							));
+					Exito datosGuardadosConExito = new Exito();
+					datosGuardadosConExito.setVisible(true);
+					JOptionPane.showMessageDialog(null, "Se genero el numero de reserva : "+idReserva);
+					
+					//===========================================================================
 					RegistroHuesped registro = new RegistroHuesped();
 					registro.setVisible(true);
+					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
 				}

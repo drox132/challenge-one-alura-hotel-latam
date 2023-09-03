@@ -162,7 +162,40 @@ public class MenuPrincipal extends JFrame {
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setForeground(SystemColor.textHighlight);
 		lblTitulo.setFont(new Font("Roboto Light", Font.PLAIN, 20));
+		
+		
+		//Botón RegistoReserva
+				JPanel btnregistroReserva = new JPanel(); 
+				btnregistroReserva.setBounds(754, 400, 83, 70);
+				btnregistroReserva.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						ReservasView registroReseva = new ReservasView();
+						registroReseva.setVisible(true);
+						dispose();
+					}
+				});
+				
+				btnregistroReserva.setLayout(null);
+				btnregistroReserva.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+				btnregistroReserva.setBackground(SystemColor.window);
+				panel.add(btnregistroReserva);
+				
+				JLabel imagenRegistroReserva = new JLabel("");
+				imagenRegistroReserva.setBounds(0, 0, 80, 70);
+				btnregistroReserva.add(imagenRegistroReserva);
+				imagenRegistroReserva.setHorizontalAlignment(SwingConstants.CENTER);
+				imagenRegistroReserva.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/login.png")));
+				
+				JLabel lblTituloRegistroReserva = new JLabel("REGISTRO");
+				lblTituloRegistroReserva.setBounds(744, 375, 100, 24);
+				lblTituloRegistroReserva.setBackground(SystemColor.window);
+				panel.add(lblTituloRegistroReserva);
+				lblTituloRegistroReserva.setHorizontalAlignment(SwingConstants.CENTER);
+				lblTituloRegistroReserva.setForeground(SystemColor.textHighlight);
+				lblTituloRegistroReserva.setFont(new Font("Roboto Light", Font.PLAIN, 20));
 	}
+	
 	
 	//Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"	
 	private void headerMousePressed(java.awt.event.MouseEvent evt) {

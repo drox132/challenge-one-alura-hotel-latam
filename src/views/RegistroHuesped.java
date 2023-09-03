@@ -7,6 +7,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
+
+import controller.HuespedController;
+import model.Huesped;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -70,6 +74,8 @@ public class RegistroHuesped extends JFrame {
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		contentPane.setLayout(null);
+		
+		HuespedController huespedController = new HuespedController();
 		
 		JPanel header = new JPanel();
 		header.setBounds(0, 0, 910, 36);
@@ -151,7 +157,7 @@ public class RegistroHuesped extends JFrame {
 		txtNacionalidad.setBounds(560, 350, 289, 36);
 		txtNacionalidad.setBackground(SystemColor.text);
 		txtNacionalidad.setFont(new Font("Roboto", Font.PLAIN, 16));
-		txtNacionalidad.setModel(new DefaultComboBoxModel(new String[] {"afgano-afgana", "alemán-", "alemana", "árabe-árabe", "argentino-argentina", "australiano-australiana", "belga-belga", "boliviano-boliviana", "brasileño-brasileña", "camboyano-camboyana", "canadiense-canadiense", "chileno-chilena", "chino-china", "colombiano-colombiana", "coreano-coreana", "costarricense-costarricense", "cubano-cubana", "danés-danesa", "ecuatoriano-ecuatoriana", "egipcio-egipcia", "salvadoreño-salvadoreña", "escocés-escocesa", "español-española", "estadounidense-estadounidense", "estonio-estonia", "etiope-etiope", "filipino-filipina", "finlandés-finlandesa", "francés-francesa", "galés-galesa", "griego-griega", "guatemalteco-guatemalteca", "haitiano-haitiana", "holandés-holandesa", "hondureño-hondureña", "indonés-indonesa", "inglés-inglesa", "iraquí-iraquí", "iraní-iraní", "irlandés-irlandesa", "israelí-israelí", "italiano-italiana", "japonés-japonesa", "jordano-jordana", "laosiano-laosiana", "letón-letona", "letonés-letonesa", "malayo-malaya", "marroquí-marroquí", "mexicano-mexicana", "nicaragüense-nicaragüense", "noruego-noruega", "neozelandés-neozelandesa", "panameño-panameña", "paraguayo-paraguaya", "peruano-peruana", "polaco-polaca", "portugués-portuguesa", "puertorriqueño-puertorriqueño", "dominicano-dominicana", "rumano-rumana", "ruso-rusa", "sueco-sueca", "suizo-suiza", "tailandés-tailandesa", "taiwanes-taiwanesa", "turco-turca", "ucraniano-ucraniana", "uruguayo-uruguaya", "venezolano-venezolana", "vietnamita-vietnamita"}));
+		txtNacionalidad.setModel(new DefaultComboBoxModel(new String[] {"afgano-afgana", "alemán", "alemana", "árabe-árabe", "argentino-argentina", "australiano-australiana", "belga-belga", "boliviano-boliviana", "brasileño-brasileña", "camboyano-camboyana", "canadiense-canadiense", "chileno-chilena", "chino-china", "colombiano-colombiana", "coreano-coreana", "costarricense-costarricense", "cubano-cubana", "danés-danesa", "ecuatoriano-ecuatoriana", "egipcio-egipcia", "salvadoreño-salvadoreña", "escocés-escocesa", "español-española", "estadounidense-estadounidense", "estonio-estonia", "etiope-etiope", "filipino-filipina", "finlandés-finlandesa", "francés-francesa", "galés-galesa", "griego-griega", "guatemalteco-guatemalteca", "haitiano-haitiana", "holandés-holandesa", "hondureño-hondureña", "indonés-indonesa", "inglés-inglesa", "iraquí-iraquí", "iraní-iraní", "irlandés-irlandesa", "israelí-israelí", "italiano-italiana", "japonés-japonesa", "jordano-jordana", "laosiano-laosiana", "letón-letona", "letonés-letonesa", "malayo-malaya", "marroquí-marroquí", "mexicano-mexicana", "nicaragüense-nicaragüense", "noruego-noruega", "neozelandés-neozelandesa", "panameño-panameña", "paraguayo-paraguaya", "peruano-peruana", "polaco-polaca", "portugués-portuguesa", "puertorriqueño-puertorriqueño", "dominicano-dominicana", "rumano-rumana", "ruso-rusa", "sueco-sueca", "suizo-suiza", "tailandés-tailandesa", "taiwanes-taiwanesa", "turco-turca", "ucraniano-ucraniana", "uruguayo-uruguaya", "venezolano-venezolana", "vietnamita-vietnamita"}));
 		contentPane.add(txtNacionalidad);
 		
 		JLabel lblNombre = new JLabel("NOMBRE");
@@ -253,6 +259,37 @@ public class RegistroHuesped extends JFrame {
 		btnguardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				//========================================================
+				//========================================================
+			try {
+				Integer idGenerado = huespedController.save(new Huesped(
+						txtNombre.getText(),              
+						txtApellido.getText(),  
+						txtFechaN.getDate(),
+						txtNacionalidad.getSelectedItem().toString(),
+						txtTelefono.getText(),            
+						Integer.parseInt(txtNreserva.getText())             
+						));
+				
+				Exito datosGuardadosConExito = new Exito();
+				datosGuardadosConExito.setVisible(true);
+				JOptionPane.showMessageDialog(null, "Ha sido Registrado con Exito bajo el ID: "+idGenerado);
+				
+						Login frame = new Login();
+						frame.setVisible(true);
+						dispose();
+			} catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "Por favor ingrese los datos Correctamente");
+
+				throw new RuntimeException(e2);
+				
+			}
+				
+				
+				
+				//========================================================
+				//========================================================
+				
 			}
 		});
 		btnguardar.setLayout(null);
@@ -284,13 +321,13 @@ public class RegistroHuesped extends JFrame {
 		logo.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/Ha-100px.png")));
 		
 		JPanel btnexit = new JPanel();
-		btnexit.setBounds(857, 0, 53, 36);
-		contentPane.add(btnexit);
+		header.add(btnexit);
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuPrincipal principal = new MenuPrincipal();
-				principal.setVisible(true);
+				/*
+				 * MenuPrincipal principal = new MenuPrincipal(); principal.setVisible(true);
+				 */
 				dispose();
 			}
 			@Override
@@ -300,13 +337,14 @@ public class RegistroHuesped extends JFrame {
 			}			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				 btnexit.setBackground(Color.white);
+				 btnexit.setBackground(new Color(12, 138, 199));
 			     labelExit.setForeground(Color.black);
 			}
 		});
 		btnexit.setLayout(null);
-		btnexit.setBackground(Color.white);
-		
+		btnexit.setBackground(new Color(12, 138, 199));
+		btnexit.setBounds(857, 0, 53, 36);
+
 		labelExit = new JLabel("X");
 		labelExit.setBounds(0, 0, 53, 36);
 		btnexit.add(labelExit);
